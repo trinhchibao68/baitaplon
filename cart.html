@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .remove-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .remove-btn:hover {
+      background-color: #c82333;
+    }
+    .checkout-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .checkout-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Giỏ hàng của bạn</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sản phẩm</th>
+      <th>Số lượng</th>
+      <th>Giá</th>
+      <th>Tổng cộng</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody id="cart-items">
+    <!-- Sản phẩm sẽ được thêm vào đây -->
+  </tbody>
+</table>
+
+<h2>Tổng cộng: $<span id="total-price">0</span></h2>
+
+<button class="checkout-btn">Thanh toán</button>
+
+<script>
+  // Lấy giỏ hàng từ LocalStorage
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  function updateCart() {
+    let cartTableBody = $('#cart-items');
+    cartTableBody.empty();
+    let totalPrice = 0;
+
+    cart.forEach((item, index) => {
+      let itemTotal = item.price * item.quantity;
+      totalPrice += itemTotal;
+
+      let row = `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.quantity}</td>
+          <td>$${item.price}</td>
+          <td>$${itemTotal}</td>
+          <td><button class="remove-btn" data-index="${index}">Xóa</button></td>
+        </tr>
+      `;
+
+      cartTableBody.append(row);
+    });
+
+    $('#total-price').text(totalPrice);
+  }
+
+  // Xóa sản phẩm khỏi giỏ hàng
+  $(document).on('click', '.remove-btn', function() {
+    let itemIndex = $(this).data('index');
+    cart.splice(itemIndex, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
+  });
+
+  // Cập nhật giỏ hàng khi tải trang
+  $(document).ready(function() {
+    updateCart();
+  });
+</script>
+
+</body>
+</html>

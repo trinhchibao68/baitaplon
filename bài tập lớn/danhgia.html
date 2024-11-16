@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phản hồi đánh giá</title>
+  <link rel="stylesheet" href="../bài tập lớn/css/style.css">
+  <style>
+    * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #c0dce4;
+  margin: 0;
+  padding: 0;
+}
+
+.review-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: #f89cab;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.rating-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.star-rating {
+  display: flex;
+  justify-content: center;
+}
+
+.star {
+  font-size: 30px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked ~ label {
+  color: #ff9800;
+}
+
+.feedback-section, .user-info {
+  margin-bottom: 20px;
+}
+
+textarea, input[type="text"], input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background-color: #b92871;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+#resultMessage {
+  margin-top: 20px;
+  text-align: center;
+}
+
+  </style>
+</head>
+<body>
+  <div class="review-container">
+    <h1>Đánh giá sản phẩm</h1>
+    
+    <!-- Form đánh giá -->
+    <form id="reviewForm">
+      <div class="rating-section">
+        <h3>Chọn đánh giá của bạn:</h3>
+        <div class="star-rating">
+          <input type="radio" id="5-stars" name="rating" value="5">
+          <label for="5-stars" class="star">&#9733;</label>
+          
+          <input type="radio" id="4-stars" name="rating" value="4">
+          <label for="4-stars" class="star">&#9733;</label>
+          
+          <input type="radio" id="3-stars" name="rating" value="3">
+          <label for="3-stars" class="star">&#9733;</label>
+          
+          <input type="radio" id="2-stars" name="rating" value="2">
+          <label for="2-stars" class="star">&#9733;</label>
+          
+          <input type="radio" id="1-star" name="rating" value="1">
+          <label for="1-star" class="star">&#9733;</label>
+        </div>
+      </div>
+
+      <!-- Nhận xét -->
+      <div class="feedback-section">
+        <label for="reviewText">Nhận xét của bạn:</label>
+        <textarea id="reviewText" name="reviewText" rows="5" placeholder="Nhập nhận xét của bạn tại đây..."></textarea>
+      </div>
+
+      <!-- Tên và email -->
+      <div class="user-info">
+        <label for="name">Tên:</label>
+        <input type="text" id="name" name="name" placeholder="Nhập tên của bạn">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Nhập email của bạn">
+      </div>
+
+      <!-- Nút gửi -->
+      <button type="submit">Gửi đánh giá</button>
+    </form>
+
+    <!-- Kết quả gửi -->
+    <div id="resultMessage"></div>
+  </div>
+
+  <script >
+    document.getElementById('reviewForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+  // Lấy giá trị từ form
+  const rating = document.querySelector('input[name="rating"]:checked');
+  const reviewText = document.getElementById('reviewText').value.trim();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+
+  // Kiểm tra dữ liệu hợp lệ
+  if (!rating) {
+    alert('Vui lòng chọn đánh giá của bạn.');
+    return;
+  }
+  if (reviewText === '' || name === '' || email === '') {
+    alert('Vui lòng điền đầy đủ thông tin.');
+    return;
+  }
+
+  // Hiển thị thông báo gửi thành công
+  const resultMessage = document.getElementById('resultMessage');
+  resultMessage.innerHTML = `<p>Cảm ơn ${name}, đánh giá của bạn đã được gửi!</p>`;
+  resultMessage.style.color = 'green';
+
+  // Xóa dữ liệu form sau khi gửi
+  document.getElementById('reviewForm').reset();
+});
+
+  </script>
+</body>
+</html>
